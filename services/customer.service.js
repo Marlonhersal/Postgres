@@ -5,12 +5,15 @@ class CustomerService{
     constructor(){
     }
     async create(data){
-        const newUser = await models.Customer.create(data)
-        return newUser;
+        //const newUser = await models.User.create(data.user)
+        const customer = await models.Customer.create(data,{
+            include:['user']
+        })
+        return customer;
     }
 
     async find(){
-        const data = await models.Customer.findAll()
+        const data = await models.Customer.findAll({include: ['user']})
         return data
     }
 
@@ -25,7 +28,6 @@ class CustomerService{
         const rta =  await customer.update(data)
         return rta
     }
-
     async delete(id) {
         const customer = await this.findOne(id)
         await customer.destroy(id)
