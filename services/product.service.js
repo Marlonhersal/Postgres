@@ -2,6 +2,7 @@ const faker = require('faker');
 const boom = require('@hapi/boom');
 const pool = require('../libs/postgres.pool')
 const sequelize = require('../libs/sequelize')
+const {Op} = require('sequelize')
 
 const {models} = require("../libs/sequelize")
 
@@ -33,14 +34,28 @@ class ProductsService {
   async find(req) {
 
     const options = {
-      include: ['category']
+      include: ['category'],
+      where:{}
     }
     const {limit, offset} = req.body
     if(limit && offset){
       options.limit = limit;
       options.offset = offset
     }
+
+    const {price} = req.body
+    if(price ){
+      options.where.price = price;
     
+    }
+    const {price_min, price_max} = req.body
+    if(price_min && price_max){
+      options.where.price = {
+        [Op.gte]: price_min,
+        [Op.lte]: price_max
+      };
+    }
+
     const products = await models.Product.findAll(options)
     return products;
   }
