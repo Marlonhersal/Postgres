@@ -30,11 +30,18 @@ class ProductsService {
     return newProduct;
   }
 
-  async find() {
-    const query = 'SELECT * FROM tasks';
-    const products = await models.Product.findAll({
+  async find(req) {
+
+    const options = {
       include: ['category']
-    })
+    }
+    const {limit, offset} = req.body
+    if(limit && offset){
+      options.limit = limit;
+      options.offset = offset
+    }
+    
+    const products = await models.Product.findAll(options)
     return products;
   }
 
