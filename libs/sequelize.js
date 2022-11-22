@@ -2,11 +2,18 @@ const { Sequelize } = require('sequelize');
 const setupModels = require('../db/models')
 const {config} = require('../config/config');
 
-const USER = encodeURIComponent(config.dbUser);
-const PASSWORD = encodeURIComponent(config.dbPassword);
-const URI = `postgres://${USER}:${PASSWORD}@${config.dbHost}:${config.dbPort}/${config.dbName}`;
+const options = {
+    dialect: 'postgres',
+    logging: config.isProd ? false: true,   
+}
 
-const sequelize = new Sequelize(URI, { dialect: 'postgres', logging: true }); // Se crea una instancia de Sequelize, ya gestiona el pooling.
+if(config.isProd){
+    options.ssl = {
+        rejectUnauthorized: false
+    }
+}
+
+const sequelize = new Sequelize(config.dbUrl,options); // Se crea una instancia de Sequelize, ya gestiona el pooling.
 
 setupModels(sequelize);
 
