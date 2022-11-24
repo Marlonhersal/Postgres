@@ -46,6 +46,4 @@ const queryProductSchema = Joi.object({
   })
 });
 
-
-
 module.exports = { createProductSchema, updateProductSchema, getProductSchema , queryProductSchema}
