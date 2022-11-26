@@ -6,7 +6,8 @@ const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbGUiOiJjdXN0
 
 function verifyToken(token, secret){
     return jwt.verify(token, secret)
-};
+}
+
 
 const payload = verifyToken(token, secret);
 

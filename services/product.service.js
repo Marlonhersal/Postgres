@@ -61,14 +61,16 @@ class ProductsService {
   }
 
   async findOne(id) {
-    const product = this.products.find(item => item.id === id);
+    const products = await models.Product.findAll()
+    console.log(products)
+    const product = products.find(item => item.dataValues.id == id);
     if (!product) {
       throw boom.notFound('product not found');
     }
     if (product.isBlock) {
       throw boom.conflict('product is block');
     }
-    return product;
+    return product; 
   }
 
   async update(id, changes) {

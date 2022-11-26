@@ -40,7 +40,7 @@ router.post('/',
       next(error);
     }
   }
-);
+)
 
 router.patch('/:id',
   validatorHandler(getUserSchema, 'params'),
